@@ -9,12 +9,15 @@ format_log() {
     printf "\nLOG - %s - %s\n" "$(date)" "$1"
 }
 
-export GIT_SSH_COMMAND='ssh -F {{ pull_job.full_working_dir }}/sshd_config'
-export ANSIBLE_CONFIG={{ ansible_local.pull.default_config_file }}
-
 format_log "Using root working directory {{ pull_job.full_working_dir }}"
+
+if [ -f "./sshd_config" ]; then
+    format_log "Using sshd_config file ${{ pull_job.full_working_dir }}/sshd_config"
+    export GIT_SSH_COMMAND='ssh -F {{ pull_job.full_working_dir }}/sshd_config'
+fi
+
 format_log "Using ansible config file $ANSIBLE_CONFIG"
-format_log "Using sshd_config file ${{ pull_job.full_working_dir }}/sshd_config"
+export ANSIBLE_CONFIG={{ ansible_local.pull.default_config_file }}
 
 cd {{ pull_job.full_working_dir }}
 if [ -d "./{{ _scm_url_parts.project }}" ]; then
