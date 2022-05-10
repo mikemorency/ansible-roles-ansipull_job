@@ -34,10 +34,10 @@
       name: "{{ pull_job_name }}"
       job: "{{ pull_job.full_working_dir }}/run_pull.sh > {{ pull_job.full_log_dir }}/run_pull.log-`date +\\%Y\\%m\\%d`.log"
 
-- name: Template SSH Config
-  template:
-    src: sshd_config.j2
-    dest: "{{ pull_job.full_working_dir }}/sshd_config"
+# - name: Template SSH Config
+#   template:
+#     src: sshd_config.j2
+#     dest: "{{ pull_job.full_working_dir }}/sshd_config"
 
 - name: Create Job
   cron: "{{ _cron_def | combine(pull_job_schedule) }}"
