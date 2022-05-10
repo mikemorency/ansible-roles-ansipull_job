@@ -2,6 +2,5 @@
 pull_job:
   full_working_dir: "{{ ansible_local.pull.working_dir }}/{{ pull_job_working_dir }}-{{ (pull_job_playbook |splitext)[0] }}"
   full_log_dir: "{{ ansible_local.pull.log_dir }}/{{ pull_job_working_dir }}-{{ (pull_job_playbook |splitext)[0] }}"
-  private_key_filename: "{{ pull_job_local_private_key_path | basename }}"
   scm:
     github.com: ssh.github.com
