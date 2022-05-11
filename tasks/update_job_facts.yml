@@ -1,0 +1,28 @@
+---
+- name: Create Fact Directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /etc/ansible
+    - /etc/ansible/facts.d
+
+- name: Check For Existing Facts
+  stat:
+    path: /etc/ansible/facts.d/ansipull_jobs.fact
+  register: _pull_job_facts
+
+- name: Create Job Definition Dict
+  set_fact:
+    _job_facts: >-
+      {{ ansible_local.ansipull_jobs | default({}) | combine({
+      _cron_def.name: _cron_dev.job
+      }) }}
+
+- name: Write Out Job Facts
+  copy:
+    dest: /etc/ansible/facts.d/ansipull_jobs.fact
+    content: "{{ _job_facts.to_json }}"
+
+- name: Refresh Facts
+  setup: {}
