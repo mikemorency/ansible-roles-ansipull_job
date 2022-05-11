@@ -21,7 +21,7 @@
   loop:
     - "{{ pull_job.project_dir }}"
     - "{{ pull_job.job_dir }}"
-    - "{{ pull_job.full_log_dir }}"
+    - "{{ pull_job.job_log_dir }}"
 
 - name: Template Run Script
   template:
