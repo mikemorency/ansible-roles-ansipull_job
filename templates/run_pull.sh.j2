@@ -9,9 +9,10 @@ format_log() {
     printf "\nLOG - %s - %s\n" "$(date)" "$1"
 }
 
-format_log "Using project working directory {{ pull_job.project_dir }}"
+format_log "Using job working directory {{ pull_job.job_dir }}"
 
-if [ -f "{{ pull_job.project_dir }}/repo_rsa_key" ]; then
+# todo
+if [ -f "{{ ansible_local.pull.keys_dir }}/repo_rsa_key" ]; then
     format_log "Using identity file {{ pull_job.project_dir }}/repo_rsa_key"
     export GIT_SSH_COMMAND='ssh -i {{ pull_job.project_dir }}/repo_rsa_key'
 fi

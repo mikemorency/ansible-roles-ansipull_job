@@ -1,7 +1,6 @@
 ---
 pull_job:
-  project_dir: "{{ ansible_local.pull.root_dir }}/{{ pull_job_working_dir }}"
-  job_dir: "{{ ansible_local.pull.root_dir }}/{{ pull_job_working_dir }}/{{ (pull_job_playbook |splitext)[0] }}"
-  job_log_dir: "{{ ansible_local.pull.log_dir }}/{{ pull_job_working_dir }}/{{ (pull_job_playbook |splitext)[0] }}"
+  job_dir: "{{ ansible_local.pull.root_dir }}/{{ pull_job_fq_name }}"
+  log_dir: "{{ ansible_local.pull.log_dir }}/{{ pull_job_fq_name }}"
   scm:
     github.com: ssh.github.com

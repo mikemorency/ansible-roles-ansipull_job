@@ -19,9 +19,8 @@
     path: "{{ item }}"
     state: directory
   loop:
-    - "{{ pull_job.project_dir }}"
     - "{{ pull_job.job_dir }}"
-    - "{{ pull_job.job_log_dir }}"
+    - "{{ pull_job.log_dir }}"
 
 - name: Template Run Script
   template:
@@ -32,8 +31,8 @@
 - name: Create Cron Definition
   set_fact:
     _cron_def:
-      name: "{{ pull_job_name }}"
-      job: "{{ pull_job.job_dir }}/run_pull.sh > {{ pull_job.job_log_dir }}/run_pull.log-`date +\\%Y\\%m\\%d`.log"
+      name: "{{ pull_job_fq_name }}"
+      job: "{{ pull_job.job_dir }}/run_pull.sh > {{ pull_job.log_dir }}/run_pull.log-`date +\\%Y\\%m\\%d`.log"
 
 - name: Create Job
   cron: "{{ _cron_def | combine(pull_job_schedule) }}"
