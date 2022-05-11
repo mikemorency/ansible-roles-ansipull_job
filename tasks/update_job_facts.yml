@@ -22,7 +22,7 @@
 - name: Write Out Job Facts
   copy:
     dest: /etc/ansible/facts.d/ansipull_jobs.fact
-    content: "{{ _job_facts.to_json }}"
+    content: "{{ _job_facts | to_json }}"
 
 - name: Refresh Facts
   setup: {}
