@@ -39,4 +39,4 @@
   cron: "{{ _cron_def | combine(pull_job_schedule) }}"
 
 - name: Update Job Facts
-  include_tasks: "{{ role_dir }}/update_job_facts.yml"
+  include_tasks: "{{ role_path }}/update_job_facts.yml"
