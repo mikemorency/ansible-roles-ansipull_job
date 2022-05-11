@@ -16,7 +16,7 @@
   set_fact:
     _job_facts: >-
       {{ ansible_local.ansipull_jobs | default({}) | combine({
-      _cron_def.name: _cron_dev.job
+      _cron_def.name: _cron_def.job
       }) }}
 
 - name: Write Out Job Facts
