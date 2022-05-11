@@ -41,6 +41,6 @@
 - name: Update Job Facts
   include_tasks: "{{ role_path }}/tasks/update_job_facts.yml"
 
-- name: Publish Job Name
+- name: Publish Latest Job Name
   set_fact:
     latest_ansipull_job_name: "{{ _cron_def.name }}"
