@@ -1,6 +1,11 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    pull_job_repo_url: 'git@github.com:mikemorency/ansible-roles-ansipull_job.git'
+    pull_job_playbook: molecule/default/test_play.yml
+    pull_job_schedule: {}
+
   tasks:
     - name: "Include pull_job"
       include_role:

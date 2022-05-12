@@ -4,12 +4,10 @@ pull_job_playbook: ''
 
 pull_job_use_project_pipfile: false
 pull_job_hosts_file: "{{ ansible_local.pull.default_host_file }}"
-pull_job_project: "{{ ((pull_job_repo_url | urlsplit('path') | split('/'))[-1] | splitext)[0] }}"
-pull_job_name: "{{ (pull_job_playbook | splitext)[0] | replace('/', '_') }}"
-pull_job_fq_name: "{{ pull_job_project }}__{{ pull_job_name }}"
-
 pull_job_repo_ssh_port: 443
 pull_job_create_sshd_config: True
 
 pull_job_schedule:
   hour: 1
+
+ansipull_root_dir: /ansible_pull

@@ -1,0 +1,46 @@
+---
+- name: Create Ansipull Directory Structure
+  file:
+    state: directory
+    path: "{{ item }}"
+  loop:
+    - "{{ ansipull.root_dir }}"
+    - "{{ ansipull.log_dir }}"
+    - /etc/ansible
+    - /etc/ansible/facts.d
+
+- name: Get Pipfile Location
+  command: pipenv --where
+  register: _pipenv_location
+
+- name: Copy Pipfile
+  copy:
+    remote_src: true
+    src: "{{ _pipenv_location }}/Pipfile"
+    dest: "{{ ansipull.root_dir }}/Pipfile"
+
+- name: Get Python Version
+  command: $(pipenv --venv)/bin/python --version
+  register: _python_version
+
+- name: Parse Out Python Version
+  set_fact:
+    _python_version: "{{ (_python_version.stdout.split(' ')[1].split('.')[:2] | join(',') }}"
+
+- name: Create Default Ansible Config
+  template:
+    src: ansible.cfg.j2
+    dest: "{{ ansipull.default_config_file }}"
+
+- name: Create Default Hosts
+  template:
+    src: default_hosts.j2
+    dest: "{{ ansipull.default_host_file }}"
+
+- name: Write Out Job Facts
+  copy:
+    dest: /etc/ansible/facts.d/pull.fact
+    content: "{{ ansipull | combine({ 'python_version': _python_version }) | to_json }}"
+
+- name: Run Setup To Lookup Facts
+  setup: {}

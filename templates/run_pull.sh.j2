@@ -11,8 +11,7 @@ format_log() {
 
 format_log "Using job working directory {{ pull_job.job_dir }}"
 
-# todo
-if [ -f "{{ ansible_local.pull.keys_dir }}/repo_rsa_key" ]; then
+if [ -f "{{ pull_job.project_dir }}/repo_rsa_key" ]; then
     format_log "Using identity file {{ pull_job.project_dir }}/repo_rsa_key"
     export GIT_SSH_COMMAND='ssh -i {{ pull_job.project_dir }}/repo_rsa_key'
 fi
@@ -32,19 +31,22 @@ cd "./{{ _scm_url_parts.project }}"
 {% if not pull_job_use_project_pipfile %}
 format_log "Removing project pipfiles, will use default"
 rm -f Pipfile*
+export PIPENV_MAX_DEPTH=3
 {% endif %}
 
-format_log "Using pipfile located in $({{ ansible_local.pull.pipenv }} --where)"
+pipenv_path=$({{ ansible_local.pull.pipenv }} --where)
+format_log "Using pipfile located in $pipenv_path"
+
 format_log "Starting sync of pipenv packages"
 {{ ansible_local.pull.pipenv }} --bare install
 format_log "Done syncing pipenv"
 
 if [ -f roles/requirements.yml ]; then
     format_log "Installing ansible requirements"
-    {{ ansible_local.pull.pipenv }} run ansible-galaxy install -r roles/requirements.yml --force
+    ${pipenv_path}/bin/ansible-galaxy install -r roles/requirements.yml --force
     format_log "Finished installing requirements"
 fi
 
 format_log "Starting playbook run"
-{{ ansible_local.pull.pipenv }} run ansible-playbook -i {{ pull_job_hosts_file }} {{ pull_job_playbook }}
+${pipenv_path}/bin/ansible-galaxyansible-playbook -i {{ pull_job_hosts_file }} {{ pull_job_playbook }}
 format_log "Finished playbook run"

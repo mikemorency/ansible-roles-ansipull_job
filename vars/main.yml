@@ -1,6 +1,20 @@
 ---
+_pull_job_project: "{{ ((pull_job_repo_url | urlsplit('path') | split('/'))[-1] | splitext)[0] }}"
+_pull_job_name: "{{ (pull_job_playbook | splitext)[0] | replace('/', '_') }}"
+
 pull_job:
-  job_dir: "{{ ansible_local.pull.root_dir }}/{{ pull_job_fq_name }}"
-  log_dir: "{{ ansible_local.pull.log_dir }}/{{ pull_job_fq_name }}"
+  project: "{{ _pull_job_project }}"
+  name: "{{ _pull_job_name }}"
+  fq_name: "{{ _pull_job_project }}__{{ _pull_job_name }}"
+  project_dir: "{{ ansible_local.pull.root_dir }}/{{ _pull_job_project }}"
+  job_dir: "{{ ansible_local.pull.root_dir }}/{{ _pull_job_project }}/{{ pull_job_name }}"
+  log_dir: "{{ ansible_local.pull.log_dir }}/{{ _pull_job_project }}__{{ _pull_job_name }}"
   scm:
     github.com: ssh.github.com
+
+ansipull:
+  root_dir: "{{ ansipull_root_dir }}"
+  log_dir: "{{ ansipull_root_dir }}/logs"
+  default_host_file: "{{ ansipull_root_dir }}/default_hosts"
+  default_config_file: "{{ ansipull_root_dir }}/ansible.cfg"
+  pipenv: /usr/local/bin/pipenv

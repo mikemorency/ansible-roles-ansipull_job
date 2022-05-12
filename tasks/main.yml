@@ -1,6 +1,6 @@
 ---
-- name: Run Setup To Lookup Facts
-  setup: {}
+- name: Include Ansipull Bootstrap
+  include_tasks: "{{ role_path }}/tasks/bootstrap_pull.yml"
 
 - name: Make Sure ansible_pull was applied on this system
   assert:
@@ -19,6 +19,7 @@
     path: "{{ item }}"
     state: directory
   loop:
+    - "{{ pull_job.project_dir }}"
     - "{{ pull_job.job_dir }}"
     - "{{ pull_job.log_dir }}"
 
@@ -31,7 +32,7 @@
 - name: Create Cron Definition
   set_fact:
     _cron_def:
-      name: "{{ pull_job_fq_name }}"
+      name: "{{ pull_job.fq_name }}"
       job: "{{ pull_job.job_dir }}/run_pull.sh > {{ pull_job.log_dir }}/run_pull.log-`date +\\%Y\\%m\\%d`.log"
 
 - name: Create Job
