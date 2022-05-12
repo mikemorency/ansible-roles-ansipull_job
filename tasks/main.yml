@@ -29,6 +29,13 @@
     dest: "{{ pull_job.job_dir }}/run_pull.sh"
     mode: '0700'
 
+- name: Copy Repo RSA File Over
+  copy:
+    src: "{{ pull_job_place_rsa_file }}"
+    dest: "{{ pull_job.project_dir }}/repo_rsa_key"
+    mode: '0600'
+  when: pull_job_place_rsa_file
+
 - name: Create Cron Definition
   set_fact:
     _cron_def:

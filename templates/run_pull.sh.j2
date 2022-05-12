@@ -16,8 +16,8 @@ if [ -f "{{ pull_job.project_dir }}/repo_rsa_key" ]; then
     export GIT_SSH_COMMAND='ssh -i {{ pull_job.project_dir }}/repo_rsa_key'
 fi
 
-format_log "Using ansible config file $ANSIBLE_CONFIG"
 export ANSIBLE_CONFIG={{ ansible_local.pull.default_config_file }}
+format_log "Using ansible config file $ANSIBLE_CONFIG"
 
 cd {{ pull_job.job_dir }}
 if [ -d "./{{ _scm_url_parts.project }}" ]; then
