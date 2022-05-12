@@ -19,6 +19,12 @@
     src: "{{ _pipenv_location.stdout | trim }}/Pipfile"
     dest: "{{ ansipull.root_dir }}/Pipfile"
 
+- name: Create Virtual Env
+  command: pipenv sync
+  args:
+    chdir: "{{ ansipull.root_dir }}"
+  changed_when: false
+
 - name: Get Python Version
   shell: $(pipenv --venv)/bin/python --version
   register: _python_version
