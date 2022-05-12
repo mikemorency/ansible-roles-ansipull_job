@@ -20,7 +20,7 @@
     dest: "{{ ansipull.root_dir }}/Pipfile"
 
 - name: Get Python Version
-  command: $(pipenv --venv)/bin/python --version
+  shell: $(pipenv --venv)/bin/python --version
   register: _python_version
 
 - name: Parse Out Python Version
