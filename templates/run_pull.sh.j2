@@ -32,22 +32,22 @@ cd "./{{ _scm_url_parts.project }}"
 {% if not pull_job_use_project_pipfile %}
 format_log "Removing project pipfiles, will use default"
 rm -f Pipfile*
-export PIPENV_MAX_DEPTH=3
+export PIPENV_MAX_DEPTH=5
 {% endif %}
 
-pipenv_path=$({{ ansible_local.pull.pipenv }} --where)
+pipenv_path=$({{ ansible_local.pull.pipenv }} --venv)
 format_log "Using pipfile located in $pipenv_path"
 
 format_log "Starting sync of pipenv packages"
 {{ ansible_local.pull.pipenv }} --bare install
 format_log "Done syncing pipenv"
 
-if [ -f roles/requirements.yml ]; then
+if [ -f "{{ pull_job_playbook | dirname }}/roles/requirements.yml" ]; then
     format_log "Installing ansible requirements"
-    ${pipenv_path}/bin/ansible-galaxy install -r roles/requirements.yml --force
+    ${pipenv_path}/bin/ansible-galaxy install -r "{{ pull_job_playbook | dirname }}/roles/requirements.yml" --force
     format_log "Finished installing requirements"
 fi
 
 format_log "Starting playbook run"
-${pipenv_path}/bin/ansible-galaxyansible-playbook -i {{ pull_job_hosts_file }} {{ pull_job_playbook }}
+${pipenv_path}/bin/ansible-playbook -i {{ pull_job_hosts_file }} {{ pull_job_playbook }}
 format_log "Finished playbook run"

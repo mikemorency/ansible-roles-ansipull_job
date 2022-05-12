@@ -25,7 +25,7 @@
 
 - name: Parse Out Python Version
   set_fact:
-    _python_version: "{{ _python_version.stdout.split(' ')[1].split('.')[:2] | join(',') }}"
+    _python_version: "{{ _python_version.stdout.split(' ')[1].split('.')[:2] | join('.') }}"
 
 - name: Create Default Ansible Config
   template:
@@ -33,8 +33,8 @@
     dest: "{{ ansipull.default_config_file }}"
 
 - name: Create Default Hosts
-  template:
-    src: default_hosts.j2
+  copy:
+    src: default_hosts
     dest: "{{ ansipull.default_host_file }}"
 
 - name: Write Out Job Facts
