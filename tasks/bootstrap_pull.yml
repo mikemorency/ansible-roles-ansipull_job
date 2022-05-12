@@ -25,7 +25,7 @@
 
 - name: Parse Out Python Version
   set_fact:
-    _python_version: "{{ (_python_version.stdout.split(' ')[1].split('.')[:2] | join(',') }}"
+    _python_version: "{{ _python_version.stdout.split(' ')[1].split('.')[:2] | join(',') }}"
 
 - name: Create Default Ansible Config
   template:
