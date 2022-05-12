@@ -16,7 +16,7 @@
 - name: Copy Pipfile
   copy:
     remote_src: true
-    src: "{{ _pipenv_location }}/Pipfile"
+    src: "{{ _pipenv_location.stdout | trim }}/Pipfile"
     dest: "{{ ansipull.root_dir }}/Pipfile"
 
 - name: Get Python Version
