@@ -7,7 +7,7 @@ pull_job:
   name: "{{ _pull_job_name }}"
   fq_name: "{{ _pull_job_project }}__{{ _pull_job_name }}"
   project_dir: "{{ ansible_local.pull.root_dir }}/{{ _pull_job_project }}"
-  job_dir: "{{ ansible_local.pull.root_dir }}/{{ _pull_job_project }}/{{ pull_job_name }}"
+  job_dir: "{{ ansible_local.pull.root_dir }}/{{ _pull_job_project }}/{{ _pull_job_name }}"
   log_dir: "{{ ansible_local.pull.log_dir }}/{{ _pull_job_project }}__{{ _pull_job_name }}"
   scm:
     github.com: ssh.github.com
