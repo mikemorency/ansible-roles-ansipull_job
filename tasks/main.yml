@@ -30,10 +30,20 @@
     mode: '0700'
 
 - name: Copy Repo RSA File Over
-  copy:
-    src: "{{ pull_job_place_rsa_file }}"
-    dest: "{{ pull_job.project_dir }}/repo_rsa_key"
-    mode: '0600'
+  block:
+    - name: Update repo RSA file from local
+      copy:
+        src: "{{ pull_job_place_rsa_file }}"
+        dest: "{{ pull_job.project_dir }}/repo_rsa_key"
+        mode: '0600'
+        remote_src: true
+  rescue:
+    - name: Copy repo RSA file from ansible host
+      copy:
+        src: "{{ pull_job_place_rsa_file }}"
+        dest: "{{ pull_job.project_dir }}/repo_rsa_key"
+        mode: '0600'
+        remote_src: false
   when: pull_job_place_rsa_file
 
 - name: Create Cron Definition
