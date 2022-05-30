@@ -1,23 +1,30 @@
 #!/bin/bash
 
-num_cron_defs=`crontab -l | grep {{ ansipull.log_dir }} | wc -l`
-log_dirs=`ls {{ ansipull.log_dir }}`
-loop_length=`ls {{ ansipull.log_dir }} | wc -l`
+num_cron_defs=`crontab -l | grep /ansible_pull/logs | wc -l`
+log_dirs=`ls /ansible_pull/logs`
+loop_length=`ls /ansible_pull/logs | wc -l`
 current_index=0
 
 echo "["
 for log_dir in $log_dirs; do
     let "current_index+=1"
     echo "{"
-    latest_log=`ls -t {{ ansipull.log_dir }}/$log_dir/*.log | head -n 1`
+    latest_log=`ls -t /ansible_pull/logs/$log_dir/*.txt 2>/dev/null | head -n 1`
     echo "\"log_path\": \"$latest_log\","
-    if tail -n 1 $latest_log | grep -q 'Finished playbook run';  then
+
+    if [ -z $latest_log ]; then
         echo '"failed": false,'
+        echo '"last_run_date": "Not run yet"'
     else
-        echo '"failed": true,'
+        if tail -n 1 $latest_log | grep -q 'Finished playbook run';  then
+            echo '"failed": false,'
+        else
+            echo '"failed": true,'
+        fi
+
+        echo "\"last_run_date\": \"$(date --iso-8601=seconds -r $latest_log)\""
     fi
 
-    echo "\"last_run_date\": \"$(date --iso-8601=seconds -r $latest_log)\""
     if [ $current_index == $loop_length ]; then
         echo "}"
     else
