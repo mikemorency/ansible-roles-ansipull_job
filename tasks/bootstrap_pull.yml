@@ -20,7 +20,13 @@
     dest: "{{ ansipull.root_dir }}/Pipfile"
 
 - name: Create Virtual Env
-  command: pipenv install && pipenv sync
+  command: pipenv install
+  args:
+    chdir: "{{ ansipull.root_dir }}"
+  changed_when: false
+
+- name: Sync Virtual Env
+  command: pipenv sync
   args:
     chdir: "{{ ansipull.root_dir }}"
   changed_when: false
