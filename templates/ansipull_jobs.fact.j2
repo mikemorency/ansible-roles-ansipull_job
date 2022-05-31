@@ -9,7 +9,7 @@ echo "["
 for log_dir in $log_dirs; do
     let "current_index+=1"
     echo "{"
-    latest_log=`ls -t /ansible_pull/logs/$log_dir/*.txt 2>/dev/null | head -n 1`
+    latest_log=`ls -t /ansible_pull/logs/$log_dir/*.log 2>/dev/null | head -n 1`
     echo "\"log_path\": \"$latest_log\","
 
     if [ -z $latest_log ]; then
