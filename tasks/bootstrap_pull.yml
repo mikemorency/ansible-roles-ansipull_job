@@ -11,7 +11,7 @@
 
 - name: Get Pipfile Location
   command: pipenv --where
-  env:
+  environment:
     PIPENV_MAX_DEPTH: 10
   register: _pipenv_location
 
