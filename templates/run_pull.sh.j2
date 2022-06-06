@@ -10,6 +10,8 @@ format_log() {
     printf "\nLOG - %s - %s\n" "$(date)" "$1"
 }
 
+export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
 format_log "Using job working directory {{ pull_job.job_dir }}"
 
 if [ -f "{{ pull_job.project_dir }}/repo_rsa_key" ]; then
