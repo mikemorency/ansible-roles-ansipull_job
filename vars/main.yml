@@ -3,6 +3,7 @@ _pull_job_project: "{{ ((pull_job_repo_url | urlsplit('path') | split('/'))[-1] 
 _pull_job_name: "{{ (pull_job_playbook | splitext)[0] | replace('/', '_') }}"
 
 pull_job:
+  run_now: "{{ pull_job_run_now }}"
   project: "{{ _pull_job_project }}"
   name: "{{ _pull_job_name }}"
   fq_name: "{{ _pull_job_project }}__{{ _pull_job_name }}"
