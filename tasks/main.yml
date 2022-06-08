@@ -58,6 +58,6 @@
 - name: Update Job Facts
   include_tasks: "{{ role_path }}/tasks/update_job_facts.yml"
 
-- name: Publish Latest Job Name
-  set_fact:
-    latest_ansipull_job_name: "{{ _cron_def.name }}"
+- name: Run Job Now
+  shell: "{{ pull_job.job_dir }}/run_pull.sh > {{ pull_job.log_dir }}/run_pull.log-`date +\\%Y\\%m\\%d`.log"
+  when: pull_job.run_now
