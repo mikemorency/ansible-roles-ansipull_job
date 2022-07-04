@@ -21,17 +21,6 @@
     src: "{{ _pipenv_location.stdout | trim }}/Pipfile"
     dest: "{{ ansipull.root_dir }}/Pipfile"
 
-- name: Check for Pipfile.lock
-  stat:
-    path: "{{ ansipull.root_dir }}/Pipfile.lock"
-  register: _pipfile_lock
-
-- name: Initialize Lock
-  copy:
-    dest: "{{ ansipull.root_dir }}/Pipfile.lock"
-    content: '{}'
-  when: not _pipfile_lock.stat.exists
-
 - name: Create Virtual Env
   shell: pipenv sync
   args:
